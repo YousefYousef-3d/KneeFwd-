@@ -117,6 +117,7 @@ def inject_placeholder_missingness(
     dataframe: pd.DataFrame,
     missing_percent: int,
     mechanisms: list[str],
+    mechanism_split: dict[str, int],
 ) -> pd.DataFrame:
     """Create visible gaps for interface preview only."""
     if missing_percent <= 0 or not mechanisms:
@@ -124,12 +125,30 @@ def inject_placeholder_missingness(
 
     result = dataframe.copy()
     cluster_columns = [column for column in result.columns if column not in {"Day", "Date"}]
-    mask_rng = np.random.default_rng(44)
-    missing_probability = missing_percent / 100
 
-    for column in cluster_columns:
-        mask = mask_rng.random(len(result)) < missing_probability
-        result.loc[mask, column] = np.nan
+    split_weights = np.array([mechanism_split.get(mechanism, 0) for mechanism in mechanisms], dtype=float)
+    if split_weights.sum() <= 0:
+        split_weights = np.ones(len(mechanisms), dtype=float)
+    normalized_weights = split_weights / split_weights.sum()
+
+    days_per_patient = len(result)
+    target_missing_days = int(round(days_per_patient * missing_percent / 100))
+    target_missing_days = min(target_missing_days, days_per_patient)
+
+    for index, column in enumerate(cluster_columns):
+        if target_missing_days <= 0:
+            continue
+
+        rng = np.random.default_rng(44 + index)
+        selected_rows = rng.choice(days_per_patient, size=target_missing_days, replace=False)
+
+        mechanism_day_counts = np.floor(normalized_weights * target_missing_days).astype(int)
+        mechanism_day_counts[: target_missing_days - mechanism_day_counts.sum()] += 1
+        start = 0
+        for count in mechanism_day_counts:
+            end = start + count
+            result.loc[result.index[selected_rows[start:end]], column] = np.nan
+            start = end
 
     return result
 
@@ -212,108 +231,156 @@ def render_output_panel(title: str, dataframe: pd.DataFrame, key: str, caption: 
 
 def render_sidebar() -> dict:
     st.sidebar.header("Simulator Controls")
+    cohort_box = st.sidebar.container(key="box_cohort")
+    with cohort_box:
+        st.markdown("### 1. Cohort")
+        patient_count = st.number_input(
+            "Number of simulated patients",
+            min_value=10,
+            max_value=5000,
+            value=200,
+            step=10,
+            help="Total cohort size used by the simulator interface.",
+        )
+        st.caption("Defines how many virtual patients belong to the simulated recovery cohort.")
 
-    st.sidebar.markdown("### 1. Cohort")
-    patient_count = st.sidebar.number_input(
-        "Number of simulated patients",
-        min_value=10,
-        max_value=5000,
-        value=200,
-        step=10,
-        help="Total cohort size used by the simulator interface.",
-    )
-    st.sidebar.caption("Defines how many virtual patients belong to the simulated recovery cohort.")
-    st.sidebar.markdown("---")
+    bmi_box = st.sidebar.container(key="box_bmi")
+    with bmi_box:
+        st.markdown("### 2. Average BMI")
+        average_bmi = st.slider(
+            "Average BMI",
+            min_value=15.0,
+            max_value=50.0,
+            value=28.0,
+            step=0.5,
+            help="kg/m^2",
+        )
+        st.caption("Mean body mass index for the simulated group, reported in kg/m^2.")
 
-    average_bmi = st.sidebar.slider(
-        "Average BMI",
-        min_value=15.0,
-        max_value=50.0,
-        value=28.0,
-        step=0.5,
-        help="kg/m^2",
-    )
-    st.sidebar.caption("Mean body mass index for the simulated group, reported in kg/m^2.")
-    st.sidebar.markdown("---")
+    gender_box = st.sidebar.container(key="box_gender")
+    with gender_box:
+        st.markdown("### 3. Gender")
+        female_percent = st.slider(
+            "Proportion female (%)",
+            min_value=0,
+            max_value=100,
+            value=55,
+            step=1,
+            help="Defines the sex distribution of the simulated cohort.",
+        )
+        st.caption("The remaining percentage is treated as male for this interface-only version.")
 
-    female_percent = st.sidebar.slider(
-        "Proportion female (%)",
-        min_value=0,
-        max_value=100,
-        value=55,
-        step=1,
-        help="Defines the sex distribution of the simulated cohort.",
-    )
-    st.sidebar.caption("The remaining percentage is treated as male for this interface-only version.")
-    st.sidebar.markdown("---")
+    pain_box = st.sidebar.container(key="box_pain")
+    with pain_box:
+        st.markdown("### 4. Pain")
+        pain_severity = st.select_slider(
+            "Pain severity (VAS band)",
+            options=["Mild (0-3)", "Moderate (4-6)", "Severe (7-10)"],
+            value="Moderate (4-6)",
+            help="VAS means visual analogue scale, where 0 is no pain and 10 is worst imaginable pain.",
+        )
+        st.caption(PAIN_SEVERITY_DESCRIPTIONS[pain_severity])
 
-    pain_severity = st.sidebar.select_slider(
-        "Pain severity (VAS band)",
-        options=["Mild (0-3)", "Moderate (4-6)", "Severe (7-10)"],
-        value="Moderate (4-6)",
-        help="VAS means visual analogue scale, where 0 is no pain and 10 is worst imaginable pain.",
-    )
-    st.sidebar.caption(PAIN_SEVERITY_DESCRIPTIONS[pain_severity])
-    st.sidebar.markdown("---")
+    activity_box = st.sidebar.container(key="box_activity")
+    with activity_box:
+        st.markdown("### 5. Activity Level")
+        activity_level = st.select_slider(
+            "Baseline activity level",
+            options=ACTIVITY_LEVELS,
+            value="Moderately active",
+            help="Approximate daily movement level before or near the start of recovery.",
+        )
+        st.caption(ACTIVITY_LEVEL_DESCRIPTIONS[activity_level])
 
-    activity_level = st.sidebar.select_slider(
-        "Baseline activity level",
-        options=ACTIVITY_LEVELS,
-        value="Moderately active",
-        help="Approximate daily movement level before or near the start of recovery.",
-    )
-    st.sidebar.caption(ACTIVITY_LEVEL_DESCRIPTIONS[activity_level])
+    recovery_box = st.sidebar.container(key="box_recovery")
+    with recovery_box:
+        st.markdown("### 6. Recovery Plan")
+        trajectory = st.selectbox(
+            "Recovery trajectory (cluster)",
+            options=list(TRAJECTORIES.keys()),
+            index=1,
+            help="Clinical recovery pattern assigned to the simulated group.",
+        )
+        st.caption(TRAJECTORIES[trajectory])
 
-    st.sidebar.markdown("### 2. Recovery Model")
-    trajectory = st.sidebar.selectbox(
-        "Recovery trajectory (cluster)",
-        options=list(TRAJECTORIES.keys()),
-        index=1,
-        help="Clinical recovery pattern assigned to the simulated group.",
-    )
-    st.sidebar.caption(TRAJECTORIES[trajectory])
-    st.sidebar.markdown("---")
+    missing_box = st.sidebar.container(key="box_missing")
+    with missing_box:
+        st.markdown("### 7. Missing-Data Mechanism")
+        randomize_missing_percent = st.checkbox(
+            "Randomize missing-data percentage",
+            value=False,
+            help="Draws a random missing-data percentage for the current simulation run.",
+        )
+        st.caption("When enabled, the app samples a value from 0% to 100% for each new simulation run.")
 
-    st.sidebar.markdown("### 3. Missing-Data Mechanism")
-    randomize_missing_percent = st.sidebar.checkbox(
-        "Randomize missing-data percentage",
-        value=False,
-        help="Draws a random missing-data percentage for the current simulation run.",
-    )
-    st.sidebar.caption("When enabled, the app samples a value from 0% to 100% for each new simulation run.")
-    st.sidebar.markdown("---")
+        manual_missing_percent = st.slider(
+            "Percentage of missing data",
+            min_value=0,
+            max_value=100,
+            value=20,
+            step=1,
+            disabled=randomize_missing_percent,
+            help="Approximate proportion of wearable observations removed from the complete dataset.",
+        )
+        st.caption("For example, 20% means about one in five expected observations is missing.")
 
-    manual_missing_percent = st.sidebar.slider(
-        "Percentage of missing data",
-        min_value=0,
-        max_value=100,
-        value=20,
-        step=1,
-        disabled=randomize_missing_percent,
-        help="Approximate proportion of wearable observations removed from the complete dataset.",
-    )
-    st.sidebar.caption("For example, 20% means about one in five expected observations is missing.")
-    st.sidebar.markdown("---")
+        missing_types = st.multiselect(
+            "Type of missing data",
+            options=MISSING_DATA_TYPES,
+            default=MISSING_DATA_TYPES,
+            help="Select the practical reasons wearable observations may be unavailable.",
+        )
+        selected_missing_descriptions = [
+            f"- {missing_type}: {MISSING_TYPE_DESCRIPTIONS[missing_type]}"
+            for missing_type in missing_types
+        ]
+        if selected_missing_descriptions:
+            st.caption("\n".join(selected_missing_descriptions))
+        else:
+            st.caption("No missing-data mechanism selected.")
 
-    missing_types = st.sidebar.multiselect(
-        "Type of missing data",
-        options=MISSING_DATA_TYPES,
-        default=MISSING_DATA_TYPES,
-        help="Select the practical reasons wearable observations may be unavailable.",
-    )
-    selected_missing_descriptions = [
-        f"- {missing_type}: {MISSING_TYPE_DESCRIPTIONS[missing_type]}"
-        for missing_type in missing_types
-    ]
-    if selected_missing_descriptions:
-        st.sidebar.caption("\n".join(selected_missing_descriptions))
-    else:
-        st.sidebar.caption("No missing-data mechanism selected.")
-    st.sidebar.markdown("---")
+        total_days = 365
+        estimated_missing_days = int(round(total_days * manual_missing_percent / 100))
+        st.caption(
+            f"{manual_missing_percent}% missing corresponds to approximately "
+            f"{estimated_missing_days} of {total_days} days per patient."
+        )
 
-    st.sidebar.markdown("### 4. Execute")
-    run_clicked = st.sidebar.button("Run simulation", type="primary", use_container_width=True)
-    st.sidebar.caption("Generates placeholder output panels for the selected interface settings.")
+        split_values: dict[str, int] = {}
+        split_total = 0
+        if missing_types:
+            st.markdown("Split the missing-data percentage across selected types")
+            equal_share = 100 // len(missing_types)
+            remainder = 100 - equal_share * len(missing_types)
+            for index, missing_type in enumerate(missing_types):
+                default_share = equal_share + (1 if index < remainder else 0)
+                share = st.number_input(
+                    f"{missing_type} share (%)",
+                    min_value=0,
+                    max_value=100,
+                    value=int(default_share),
+                    step=1,
+                    key=f"missing_split_{missing_type}",
+                    help="Share of the selected overall missing-data percentage assigned to this type.",
+                )
+                split_values[missing_type] = int(share)
+            split_total = sum(split_values.values())
+            st.caption(f"Current split total: {split_total}% (must equal 100%).")
+
+            if manual_missing_percent > 0:
+                split_day_lines = []
+                for missing_type in missing_types:
+                    type_days = int(round(estimated_missing_days * split_values[missing_type] / 100))
+                    split_day_lines.append(
+                        f"- {missing_type}: ~{type_days} days ({split_values[missing_type]}% of missing days)"
+                    )
+                st.caption("\n".join(split_day_lines))
+
+    execute_box = st.sidebar.container(key="box_execute")
+    with execute_box:
+        st.markdown("### 8. Execute")
+        run_clicked = st.button("Run simulation", type="primary", use_container_width=True)
+        st.caption("Generates placeholder output panels for the selected interface settings.")
     if randomize_missing_percent:
         if run_clicked or "random_missing_percent" not in st.session_state:
             st.session_state["random_missing_percent"] = int(
@@ -324,8 +391,29 @@ def render_sidebar() -> dict:
     else:
         missing_percent = manual_missing_percent
 
+    split_is_valid = True
+    if missing_percent > 0 and missing_types:
+        split_is_valid = split_total == 100
+    if missing_percent > 0 and not missing_types:
+        split_is_valid = False
+        if run_clicked:
+            st.sidebar.error("Select at least one missing-data type when missing-data percentage is above 0%.")
+
+    if run_clicked and missing_percent > 0 and missing_types and not split_is_valid:
+        st.sidebar.error("The missing-data split must total exactly 100% before running.")
+
     if run_clicked:
-        st.session_state["ran"] = True
+        st.session_state["ran"] = split_is_valid
+
+    if not missing_types:
+        split_values = {}
+    elif split_total <= 0:
+        equal_share = 100 // len(missing_types)
+        remainder = 100 - equal_share * len(missing_types)
+        split_values = {
+            missing_type: equal_share + (1 if index < remainder else 0)
+            for index, missing_type in enumerate(missing_types)
+        }
 
     return {
         "patient_count": int(patient_count),
@@ -336,6 +424,7 @@ def render_sidebar() -> dict:
         "trajectory": trajectory,
         "missing_percent": missing_percent,
         "missing_types": missing_types,
+        "missing_type_split": split_values,
     }
 
 
@@ -424,6 +513,27 @@ def render_header() -> None:
                 font-style: italic;
                 margin: 0 0 1.25rem 0;
             }}
+            [data-testid="stSidebar"] .st-key-box_cohort,
+            [data-testid="stSidebar"] .st-key-box_bmi,
+            [data-testid="stSidebar"] .st-key-box_gender,
+            [data-testid="stSidebar"] .st-key-box_pain,
+            [data-testid="stSidebar"] .st-key-box_activity,
+            [data-testid="stSidebar"] .st-key-box_recovery,
+            [data-testid="stSidebar"] .st-key-box_missing,
+            [data-testid="stSidebar"] .st-key-box_execute {{
+                border-radius: 0.8rem;
+                padding: 0.8rem 0.7rem 0.9rem 0.7rem;
+                margin-bottom: 0.7rem;
+                border: 1px solid rgba(23, 44, 74, 0.08);
+            }}
+            [data-testid="stSidebar"] .st-key-box_cohort {{ background-color: #fdf2f8; }}
+            [data-testid="stSidebar"] .st-key-box_bmi {{ background-color: #f5f3ff; }}
+            [data-testid="stSidebar"] .st-key-box_gender {{ background-color: #eff6ff; }}
+            [data-testid="stSidebar"] .st-key-box_pain {{ background-color: #fff7ed; }}
+            [data-testid="stSidebar"] .st-key-box_activity {{ background-color: #f0fdf4; }}
+            [data-testid="stSidebar"] .st-key-box_recovery {{ background-color: #ecfeff; }}
+            [data-testid="stSidebar"] .st-key-box_missing {{ background-color: #fefce8; }}
+            [data-testid="stSidebar"] .st-key-box_execute {{ background-color: #f8fafc; }}
         </style>
         <div class="kneefwd-header-row">
             <div class="kneefwd-header-brand">{brand_html}</div>
@@ -450,6 +560,16 @@ def open_how_kneefwd_works_dialog() -> None:
 def render_cohort_summary(config: dict) -> None:
     female_count = round(config["patient_count"] * config["female_percent"] / 100)
     male_count = config["patient_count"] - female_count
+    missing_split_text = (
+        ", ".join(
+            f"{missing_type}: {share}%"
+            for missing_type, share in config["missing_type_split"].items()
+        )
+        if config["missing_type_split"]
+        else "N/A"
+    )
+    missing_days = int(round(365 * config["missing_percent"] / 100))
+
     summary = pd.DataFrame(
         [
             {
@@ -462,6 +582,8 @@ def render_cohort_summary(config: dict) -> None:
                 "Pain severity": config["pain_severity"],
                 "Activity level": config["activity_level"],
                 "Missing data": f"{config['missing_percent']}%",
+                "Missing days (365d)": missing_days,
+                "Missing split": missing_split_text,
             }
         ]
     )
@@ -532,6 +654,7 @@ def main() -> None:
         full_data,
         config["missing_percent"],
         config["missing_types"],
+        config["missing_type_split"],
     )
     predicted_data = make_placeholder_prediction(missing_data)
 
