@@ -1,0 +1,1009 @@
+{
+  "config_path_used": "config/default_config.yaml",
+  "configs": {
+    "coefficients": {
+      "baseline_step_model": {
+        "age_log_effect_per_year": -0.0372,
+        "bmi_log_effect_per_unit": -0.0311,
+        "comorbidity_log_effect_per_condition": -0.035,
+        "description": "Multiplicative log-scale baseline activity model. Brisson percentage effects are encoded as log effects.",
+        "pain_nrs_log_effect_per_unit": -0.005,
+        "reference_age": 61.1,
+        "reference_bmi": 28.1,
+        "reference_pain_nrs": 5.5,
+        "reference_steps_per_day": 7158,
+        "severity_log_effects": {
+          "end_stage": -0.145,
+          "mild": 0.06,
+          "moderate": 0.0,
+          "severe": -0.085
+        },
+        "sex_log_effects": {
+          "female": -0.03,
+          "male": 0.0
+        },
+        "spring_fall_log_effect_vs_summer": -0.0716,
+        "winter_log_effect_vs_summer": -0.1616
+      },
+      "final_outcome_model": {
+        "healthy_plateau_quantile": 0.85,
+        "max_fraction_of_healthy_upper_plateau": 1.1,
+        "max_steps": 25000,
+        "min_steps": 0
+      },
+      "missingness_coefficients": {
+        "adherence_effect": -0.85,
+        "comorbidity_effect": 0.14,
+        "digital_confidence_effect": -0.55,
+        "early_post_treatment_effect": 0.25,
+        "low_activity_effect": 0.45,
+        "pain_effect": 0.18,
+        "variability_effect": 0.6
+      },
+      "recovery_class_probability_model": {
+        "age_center": 67.7,
+        "bmi_center": 30.3,
+        "coefficients_by_class": {
+          "decrease_then_increase": {
+            "adherence": 0.25,
+            "age": -0.005,
+            "bmi": -0.05,
+            "pain": -0.04,
+            "treatment_effectiveness": 0.35
+          },
+          "decreasing": {
+            "adherence": -0.5,
+            "age": 0.03,
+            "bmi": 0.08,
+            "pain": 0.11,
+            "treatment_effectiveness": -0.7
+          },
+          "fluctuating_or_relapsing": {
+            "adherence": -0.25,
+            "age": 0.01,
+            "bmi": 0.07,
+            "pain": 0.1,
+            "treatment_effectiveness": -0.2
+          },
+          "increase_then_decrease": {
+            "adherence": -0.1,
+            "age": 0.015,
+            "bmi": 0.04,
+            "pain": 0.05,
+            "treatment_effectiveness": 0.1
+          },
+          "increasing": {
+            "adherence": 0.35,
+            "age": -0.01,
+            "bmi": -0.1,
+            "pain": -0.12,
+            "treatment_effectiveness": 0.6
+          },
+          "stable_baseline": {
+            "adherence": 0.15,
+            "age": 0.0,
+            "bmi": -0.02,
+            "pain": -0.03,
+            "treatment_effectiveness": -0.1
+          }
+        },
+        "description": "Class-probability logit shifts around configured six-class priors. Pain effects are allowed here because Duong found baseline pain differed across trajectory groups.",
+        "duong_bmi_log_or_high_rapid_vs_high_gradual": -0.3285,
+        "duong_bmi_or_high_rapid_vs_high_gradual": 0.72,
+        "pain_center": 5.5
+      },
+      "recovery_rate_model": {
+        "adherence_log_rate_effect": 0.3,
+        "age_log_rate_effect_per_year": -0.01,
+        "bmi_log_rate_effect_per_unit": -0.018,
+        "pain_log_rate_effect_per_nrs": -0.025,
+        "recovery_sensitivity_log_rate_effect": 0.45,
+        "treatment_effectiveness_log_rate_effect": 0.55
+      },
+      "setback_model": {
+        "base_event_probability_per_day": 0.0025,
+        "comorbidity_effect": 0.0012,
+        "default_duration_days_mean": 9,
+        "default_duration_days_sd": 4,
+        "default_magnitude_fraction_mean": 0.28,
+        "default_magnitude_fraction_sd": 0.1,
+        "pain_effect": 0.0015,
+        "setback_tendency_effect": 0.012
+      },
+      "treatment_effectiveness_model": {
+        "adherence_effect": 0.2,
+        "baseline_multiplier_high": 1.25,
+        "baseline_multiplier_low": 0.8,
+        "comorbidity_effect": -0.08,
+        "digital_confidence_effect": 0.08,
+        "pain_effect": -0.04
+      },
+      "variability_model": {
+        "ar1_phi": 0.62,
+        "base_daily_cv": 0.16,
+        "high_variability_cv": 0.28,
+        "low_digital_confidence_effect_on_cv": 0.035,
+        "pain_effect_on_cv": 0.012,
+        "variability_tendency_effect": 0.12,
+        "weekly_pattern": {
+          "friday": 0.02,
+          "monday": -0.02,
+          "saturday": 0.04,
+          "sunday": -0.03,
+          "thursday": 0.01,
+          "tuesday": 0.0,
+          "wednesday": 0.01
+        }
+      }
+    },
+    "default": {
+      "baseline_days": 30,
+      "calendar_start_date": "2026-01-01",
+      "config_paths": {
+        "coefficients": "config/coefficients.yaml",
+        "missingness_scenarios": "config/missingness_scenarios.yaml",
+        "patient_generation": "config/patient_generation.yaml",
+        "recovery_trajectory_classes": "config/recovery_trajectory_classes.yaml"
+      },
+      "figure_settings": {
+        "dpi": 150,
+        "max_patients_per_class_plot": 3,
+        "rolling_window_days": 7
+      },
+      "healthy_reference_path": "data/external/healthy_steps_reference.csv",
+      "include_treatment_day": true,
+      "number_of_patients": 300,
+      "output_dir": "outputs",
+      "post_treatment_days": 365,
+      "random_seed": 20260513,
+      "run_imputation": true,
+      "run_plotting": true,
+      "selected_imputation_method": "linear_interpolation",
+      "selected_missingness_scenario": "default_wearable",
+      "use_healthy_reference": true,
+      "validation": {
+        "class_proportion_tolerance": 0.08,
+        "early_recovery_day": 21,
+        "expected_missingness_rate_max": 0.35,
+        "expected_missingness_rate_min": 0.05,
+        "week12_day": 84
+      }
+    },
+    "missingness_scenarios": {
+      "scenarios": {
+        "default_wearable": {
+          "description": "Balanced wearable/smartphone missingness with isolated days, short gaps, long gaps, MNAR-like burden-related nonwear, and dropout.",
+          "global_probability_multiplier": 1.0,
+          "reasons": {
+            "device_failure": {
+              "base_probability": 0.004,
+              "block_length_distribution": {
+                "long_gap": {
+                  "max": 10,
+                  "min": 5
+                },
+                "short_gap": {
+                  "max": 4,
+                  "min": 2
+                }
+              },
+              "block_type_probabilities": [
+                0.75,
+                0.25
+              ],
+              "block_types": [
+                "short_gap",
+                "long_gap"
+              ],
+              "configurable": true,
+              "explanation": "Battery, sensor, app crash, firmware, or device malfunction.",
+              "mechanism": "MCAR",
+              "patient_variable_effects": {},
+              "true_activity_effects": {}
+            },
+            "dropout": {
+              "block_types": [
+                "dropout"
+              ],
+              "configurable": true,
+              "earliest_day": 45,
+              "explanation": "Permanent or semi-permanent disengagement from device/data collection.",
+              "latest_day": 310,
+              "mechanism": "structural_dropout",
+              "patient_probability": 0.045,
+              "patient_variable_effects": {
+                "adherence_tendency": -0.45,
+                "baseline_pain_nrs": 0.15,
+                "digital_confidence_score": -0.25,
+                "missingness_tendency": 0.75
+              },
+              "true_activity_effects": {
+                "low_activity": 0.2
+              }
+            },
+            "forgot_or_nonwear": {
+              "base_probability": 0.012,
+              "block_length_distribution": {
+                "isolated": {
+                  "max": 1,
+                  "min": 1
+                },
+                "long_gap": {
+                  "max": 12,
+                  "min": 5
+                },
+                "short_gap": {
+                  "max": 4,
+                  "min": 2
+                }
+              },
+              "block_type_probabilities": [
+                0.72,
+                0.23,
+                0.05
+              ],
+              "block_types": [
+                "isolated",
+                "short_gap",
+                "long_gap"
+              ],
+              "configurable": true,
+              "explanation": "Forgetting to wear, carry, charge, or sync the wearable/phone.",
+              "mechanism": "MAR",
+              "patient_variable_effects": {
+                "adherence_tendency": -0.65,
+                "digital_confidence_score": -0.2
+              },
+              "true_activity_effects": {}
+            },
+            "pain_fatigue_or_burden_related_nonwear": {
+              "base_probability": 0.008,
+              "block_length_distribution": {
+                "isolated": {
+                  "max": 1,
+                  "min": 1
+                },
+                "long_gap": {
+                  "max": 18,
+                  "min": 6
+                },
+                "short_gap": {
+                  "max": 5,
+                  "min": 2
+                }
+              },
+              "block_type_probabilities": [
+                0.5,
+                0.35,
+                0.15
+              ],
+              "block_types": [
+                "isolated",
+                "short_gap",
+                "long_gap"
+              ],
+              "configurable": true,
+              "explanation": "Pain, fatigue, disrupted routines, low motivation, or recovery burden.",
+              "mechanism": "MNAR_like",
+              "patient_variable_effects": {
+                "baseline_pain_nrs": 0.3,
+                "comorbidity_burden": 0.16,
+                "missingness_tendency": 0.5
+              },
+              "true_activity_effects": {
+                "abrupt_drop": 0.25,
+                "low_activity": 0.55
+              }
+            },
+            "sleep_or_low_wear_time": {
+              "base_probability": 0.01,
+              "block_length_distribution": {
+                "isolated": {
+                  "max": 1,
+                  "min": 1
+                },
+                "short_gap": {
+                  "max": 3,
+                  "min": 2
+                }
+              },
+              "block_type_probabilities": [
+                0.8,
+                0.2
+              ],
+              "block_types": [
+                "isolated",
+                "short_gap"
+              ],
+              "configurable": true,
+              "explanation": "Invalid wear-time, rest days, or insufficient waking wear time.",
+              "mechanism": "MAR",
+              "patient_variable_effects": {
+                "adherence_tendency": -0.2,
+                "variability_tendency": 0.25
+              },
+              "true_activity_effects": {
+                "low_activity": 0.1
+              }
+            },
+            "sync_or_connectivity_problem": {
+              "base_probability": 0.006,
+              "block_length_distribution": {
+                "isolated": {
+                  "max": 1,
+                  "min": 1
+                },
+                "short_gap": {
+                  "max": 5,
+                  "min": 2
+                }
+              },
+              "block_type_probabilities": [
+                0.65,
+                0.35
+              ],
+              "block_types": [
+                "isolated",
+                "short_gap"
+              ],
+              "configurable": true,
+              "explanation": "Phone sync, Bluetooth, internet, permissions, or app background restrictions.",
+              "mechanism": "MAR",
+              "patient_variable_effects": {
+                "digital_confidence_score": -0.25
+              },
+              "true_activity_effects": {}
+            }
+          }
+        },
+        "high_missingness_sensitivity": {
+          "description": "Higher missingness burden for sensitivity analyses.",
+          "dropout_probability_multiplier": 1.6,
+          "global_probability_multiplier": 1.8,
+          "inherits": "default_wearable"
+        },
+        "low_missingness_sensitivity": {
+          "description": "Lower missingness burden for sensitivity analyses.",
+          "dropout_probability_multiplier": 0.6,
+          "global_probability_multiplier": 0.55,
+          "inherits": "default_wearable"
+        }
+      }
+    },
+    "patient_generation": {
+      "patient_generation": {
+        "age": {
+          "max": 85,
+          "mean": 67.7,
+          "min": 45,
+          "sd": 7.5,
+          "source": "Duong TKR sample mean/SD, with wider simulation clipping."
+        },
+        "baseline_activity": {
+          "max_steps": 18000,
+          "min_steps": 700,
+          "random_log_sd": 0.3,
+          "surgical_candidate_multiplier": 0.82
+        },
+        "baseline_function_score": {
+          "max": 100.0,
+          "mean": 62.0,
+          "min": 5.0,
+          "sd": 18.0,
+          "source": "Assumed for post-treatment simulator; higher means better function."
+        },
+        "baseline_pain_nrs": {
+          "max": 10.0,
+          "mean": 5.5,
+          "min": 0.0,
+          "sd": 2.7,
+          "source": "Duong baseline pain 0-10 NRS mean/SD."
+        },
+        "bmi": {
+          "max": 48.0,
+          "mean": 30.3,
+          "min": 18.0,
+          "sd": 6.0,
+          "source": "Duong TKR sample mean/SD."
+        },
+        "comorbidity_burden": {
+          "distribution": "poisson",
+          "lambda": 1.4,
+          "max": 6,
+          "min": 0,
+          "source": "Assumed clinically plausible count."
+        },
+        "digital_confidence_score": {
+          "max": 100.0,
+          "mean": 72.2,
+          "min": 0.0,
+          "sd": 21.2,
+          "source": "Duong modified Computer Self-efficacy Scale mean/SD."
+        },
+        "latent_traits": {
+          "adherence_beta": [
+            5.0,
+            2.4
+          ],
+          "missingness_beta": [
+            2.0,
+            5.5
+          ],
+          "recovery_sensitivity_beta": [
+            4.0,
+            3.0
+          ],
+          "setback_beta": [
+            2.0,
+            6.0
+          ],
+          "treatment_effectiveness_beta": [
+            4.2,
+            2.6
+          ],
+          "variability_beta": [
+            2.3,
+            5.0
+          ]
+        },
+        "osteoarthritis_severity": {
+          "categories": [
+            "mild",
+            "moderate",
+            "severe",
+            "end_stage"
+          ],
+          "probabilities": [
+            0.04,
+            0.22,
+            0.44,
+            0.3
+          ],
+          "source": "Brisson KL distribution and TKR context; shifted toward severe/end-stage."
+        },
+        "patient_activation_score": {
+          "max": 100.0,
+          "mean": 66.3,
+          "min": 0.0,
+          "sd": 20.4,
+          "source": "Duong PAM-13 score mean/SD."
+        },
+        "sex": {
+          "categories": [
+            "female",
+            "male"
+          ],
+          "probabilities": [
+            0.7,
+            0.3
+          ],
+          "source": "Duong sample was approximately 70% female."
+        }
+      }
+    },
+    "recovery_trajectory_classes": {
+      "trajectory_classes": {
+        "decrease_then_increase": {
+          "default_probability": 0.37,
+          "duong_early_target_day21_mean": 2843,
+          "duong_mapping": "Main surgical recovery pattern; mostly low gradually increasing plus some high rapidly increasing.",
+          "duong_week12_target_mean": 6441,
+          "early_day_sd": 1058,
+          "formula": "disruption_then_logistic",
+          "parameters": {
+            "early_fraction_of_baseline": 0.45,
+            "immediate_post_treatment_fraction": 0.1,
+            "late_gain_fraction": 0.08,
+            "midpoint_day": 75,
+            "plateau_gain_fraction": 0.28,
+            "recovery_rate": 0.05,
+            "setback_multiplier": 0.9
+          },
+          "week12_sd": 1677
+        },
+        "decreasing": {
+          "default_probability": 0.07,
+          "duong_early_target_day21_mean": 5000,
+          "duong_mapping": "Clinically plausible one-year extrapolation; not a dominant Duong 12-week group.",
+          "duong_week12_target_mean": 5600,
+          "early_day_sd": 2200,
+          "formula": "decreasing",
+          "parameters": {
+            "decline_fraction_year": 0.22,
+            "early_disruption_fraction": 0.28,
+            "early_fraction_of_baseline": 0.88,
+            "midpoint_day": 45,
+            "recovery_rate": 0.018,
+            "setback_multiplier": 1.25
+          },
+          "week12_sd": 2100
+        },
+        "fluctuating_or_relapsing": {
+          "default_probability": 0.14,
+          "duong_early_target_day21_mean": 2843,
+          "duong_mapping": "Part of low gradually increasing group extrapolated to unstable year-long recovery.",
+          "duong_week12_target_mean": 6441,
+          "early_day_sd": 1058,
+          "formula": "fluctuating",
+          "parameters": {
+            "early_fraction_of_baseline": 0.5,
+            "immediate_post_treatment_fraction": 0.12,
+            "midpoint_day": 85,
+            "plateau_gain_fraction": 0.2,
+            "recovery_rate": 0.038,
+            "relapse_amplitude_fraction": 0.14,
+            "relapse_cycle_days": 70,
+            "setback_multiplier": 1.45
+          },
+          "week12_sd": 1677
+        },
+        "increase_then_decrease": {
+          "default_probability": 0.06,
+          "duong_early_target_day21_mean": 6251,
+          "duong_mapping": "One-year relapse/decline extrapolation added for later complications or motivation loss.",
+          "duong_week12_target_mean": 9614,
+          "early_day_sd": 2500,
+          "formula": "increase_then_decrease",
+          "parameters": {
+            "decline_fraction_after_peak": 0.23,
+            "decline_start_day": 170,
+            "early_fraction_of_baseline": 0.78,
+            "midpoint_day": 65,
+            "peak_gain_fraction": 0.3,
+            "recovery_rate": 0.05,
+            "setback_multiplier": 1.1
+          },
+          "week12_sd": 1800
+        },
+        "increasing": {
+          "default_probability": 0.18,
+          "duong_early_target_day21_mean": 6251,
+          "duong_mapping": "High rapidly increasing group plus part of high gradually increasing group.",
+          "duong_week12_target_mean": 12794,
+          "early_day_sd": 3508,
+          "formula": "logistic_increase",
+          "parameters": {
+            "early_fraction_of_baseline": 0.85,
+            "late_gain_fraction": 0.06,
+            "midpoint_day": 55,
+            "plateau_gain_fraction": 0.42,
+            "recovery_rate": 0.06,
+            "setback_multiplier": 0.7
+          },
+          "week12_sd": 3173
+        },
+        "stable_baseline": {
+          "default_probability": 0.18,
+          "duong_early_target_day21_mean": 6299,
+          "duong_mapping": "Mostly high and gradually increasing group split into stable one-year outcome.",
+          "duong_week12_target_mean": 9614,
+          "early_day_sd": 1777,
+          "formula": "stable",
+          "parameters": {
+            "early_fraction_of_baseline": 0.82,
+            "long_term_drift_per_day": 5e-05,
+            "midpoint_day": 60,
+            "plateau_gain_fraction": 0.08,
+            "recovery_rate": 0.045,
+            "setback_multiplier": 0.75
+          },
+          "week12_sd": 1436
+        }
+      }
+    }
+  },
+  "flat_parameters": {
+    "coefficients.baseline_step_model.age_log_effect_per_year": -0.0372,
+    "coefficients.baseline_step_model.bmi_log_effect_per_unit": -0.0311,
+    "coefficients.baseline_step_model.comorbidity_log_effect_per_condition": -0.035,
+    "coefficients.baseline_step_model.description": "Multiplicative log-scale baseline activity model. Brisson percentage effects are encoded as log effects.",
+    "coefficients.baseline_step_model.pain_nrs_log_effect_per_unit": -0.005,
+    "coefficients.baseline_step_model.reference_age": 61.1,
+    "coefficients.baseline_step_model.reference_bmi": 28.1,
+    "coefficients.baseline_step_model.reference_pain_nrs": 5.5,
+    "coefficients.baseline_step_model.reference_steps_per_day": 7158,
+    "coefficients.baseline_step_model.severity_log_effects.end_stage": -0.145,
+    "coefficients.baseline_step_model.severity_log_effects.mild": 0.06,
+    "coefficients.baseline_step_model.severity_log_effects.moderate": 0.0,
+    "coefficients.baseline_step_model.severity_log_effects.severe": -0.085,
+    "coefficients.baseline_step_model.sex_log_effects.female": -0.03,
+    "coefficients.baseline_step_model.sex_log_effects.male": 0.0,
+    "coefficients.baseline_step_model.spring_fall_log_effect_vs_summer": -0.0716,
+    "coefficients.baseline_step_model.winter_log_effect_vs_summer": -0.1616,
+    "coefficients.final_outcome_model.healthy_plateau_quantile": 0.85,
+    "coefficients.final_outcome_model.max_fraction_of_healthy_upper_plateau": 1.1,
+    "coefficients.final_outcome_model.max_steps": 25000,
+    "coefficients.final_outcome_model.min_steps": 0,
+    "coefficients.missingness_coefficients.adherence_effect": -0.85,
+    "coefficients.missingness_coefficients.comorbidity_effect": 0.14,
+    "coefficients.missingness_coefficients.digital_confidence_effect": -0.55,
+    "coefficients.missingness_coefficients.early_post_treatment_effect": 0.25,
+    "coefficients.missingness_coefficients.low_activity_effect": 0.45,
+    "coefficients.missingness_coefficients.pain_effect": 0.18,
+    "coefficients.missingness_coefficients.variability_effect": 0.6,
+    "coefficients.recovery_class_probability_model.age_center": 67.7,
+    "coefficients.recovery_class_probability_model.bmi_center": 30.3,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decrease_then_increase.adherence": 0.25,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decrease_then_increase.age": -0.005,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decrease_then_increase.bmi": -0.05,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decrease_then_increase.pain": -0.04,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decrease_then_increase.treatment_effectiveness": 0.35,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decreasing.adherence": -0.5,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decreasing.age": 0.03,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decreasing.bmi": 0.08,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decreasing.pain": 0.11,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.decreasing.treatment_effectiveness": -0.7,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.fluctuating_or_relapsing.adherence": -0.25,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.fluctuating_or_relapsing.age": 0.01,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.fluctuating_or_relapsing.bmi": 0.07,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.fluctuating_or_relapsing.pain": 0.1,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.fluctuating_or_relapsing.treatment_effectiveness": -0.2,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increase_then_decrease.adherence": -0.1,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increase_then_decrease.age": 0.015,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increase_then_decrease.bmi": 0.04,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increase_then_decrease.pain": 0.05,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increase_then_decrease.treatment_effectiveness": 0.1,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increasing.adherence": 0.35,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increasing.age": -0.01,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increasing.bmi": -0.1,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increasing.pain": -0.12,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.increasing.treatment_effectiveness": 0.6,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.stable_baseline.adherence": 0.15,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.stable_baseline.age": 0.0,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.stable_baseline.bmi": -0.02,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.stable_baseline.pain": -0.03,
+    "coefficients.recovery_class_probability_model.coefficients_by_class.stable_baseline.treatment_effectiveness": -0.1,
+    "coefficients.recovery_class_probability_model.description": "Class-probability logit shifts around configured six-class priors. Pain effects are allowed here because Duong found baseline pain differed across trajectory groups.",
+    "coefficients.recovery_class_probability_model.duong_bmi_log_or_high_rapid_vs_high_gradual": -0.3285,
+    "coefficients.recovery_class_probability_model.duong_bmi_or_high_rapid_vs_high_gradual": 0.72,
+    "coefficients.recovery_class_probability_model.pain_center": 5.5,
+    "coefficients.recovery_rate_model.adherence_log_rate_effect": 0.3,
+    "coefficients.recovery_rate_model.age_log_rate_effect_per_year": -0.01,
+    "coefficients.recovery_rate_model.bmi_log_rate_effect_per_unit": -0.018,
+    "coefficients.recovery_rate_model.pain_log_rate_effect_per_nrs": -0.025,
+    "coefficients.recovery_rate_model.recovery_sensitivity_log_rate_effect": 0.45,
+    "coefficients.recovery_rate_model.treatment_effectiveness_log_rate_effect": 0.55,
+    "coefficients.setback_model.base_event_probability_per_day": 0.0025,
+    "coefficients.setback_model.comorbidity_effect": 0.0012,
+    "coefficients.setback_model.default_duration_days_mean": 9,
+    "coefficients.setback_model.default_duration_days_sd": 4,
+    "coefficients.setback_model.default_magnitude_fraction_mean": 0.28,
+    "coefficients.setback_model.default_magnitude_fraction_sd": 0.1,
+    "coefficients.setback_model.pain_effect": 0.0015,
+    "coefficients.setback_model.setback_tendency_effect": 0.012,
+    "coefficients.treatment_effectiveness_model.adherence_effect": 0.2,
+    "coefficients.treatment_effectiveness_model.baseline_multiplier_high": 1.25,
+    "coefficients.treatment_effectiveness_model.baseline_multiplier_low": 0.8,
+    "coefficients.treatment_effectiveness_model.comorbidity_effect": -0.08,
+    "coefficients.treatment_effectiveness_model.digital_confidence_effect": 0.08,
+    "coefficients.treatment_effectiveness_model.pain_effect": -0.04,
+    "coefficients.variability_model.ar1_phi": 0.62,
+    "coefficients.variability_model.base_daily_cv": 0.16,
+    "coefficients.variability_model.high_variability_cv": 0.28,
+    "coefficients.variability_model.low_digital_confidence_effect_on_cv": 0.035,
+    "coefficients.variability_model.pain_effect_on_cv": 0.012,
+    "coefficients.variability_model.variability_tendency_effect": 0.12,
+    "coefficients.variability_model.weekly_pattern.friday": 0.02,
+    "coefficients.variability_model.weekly_pattern.monday": -0.02,
+    "coefficients.variability_model.weekly_pattern.saturday": 0.04,
+    "coefficients.variability_model.weekly_pattern.sunday": -0.03,
+    "coefficients.variability_model.weekly_pattern.thursday": 0.01,
+    "coefficients.variability_model.weekly_pattern.tuesday": 0.0,
+    "coefficients.variability_model.weekly_pattern.wednesday": 0.01,
+    "default.baseline_days": 30,
+    "default.calendar_start_date": "2026-01-01",
+    "default.config_paths.coefficients": "config/coefficients.yaml",
+    "default.config_paths.missingness_scenarios": "config/missingness_scenarios.yaml",
+    "default.config_paths.patient_generation": "config/patient_generation.yaml",
+    "default.config_paths.recovery_trajectory_classes": "config/recovery_trajectory_classes.yaml",
+    "default.figure_settings.dpi": 150,
+    "default.figure_settings.max_patients_per_class_plot": 3,
+    "default.figure_settings.rolling_window_days": 7,
+    "default.healthy_reference_path": "data/external/healthy_steps_reference.csv",
+    "default.include_treatment_day": true,
+    "default.number_of_patients": 300,
+    "default.output_dir": "outputs",
+    "default.post_treatment_days": 365,
+    "default.random_seed": 20260513,
+    "default.run_imputation": true,
+    "default.run_plotting": true,
+    "default.selected_imputation_method": "linear_interpolation",
+    "default.selected_missingness_scenario": "default_wearable",
+    "default.use_healthy_reference": true,
+    "default.validation.class_proportion_tolerance": 0.08,
+    "default.validation.early_recovery_day": 21,
+    "default.validation.expected_missingness_rate_max": 0.35,
+    "default.validation.expected_missingness_rate_min": 0.05,
+    "default.validation.week12_day": 84,
+    "missingness_scenarios.scenarios.default_wearable.description": "Balanced wearable/smartphone missingness with isolated days, short gaps, long gaps, MNAR-like burden-related nonwear, and dropout.",
+    "missingness_scenarios.scenarios.default_wearable.global_probability_multiplier": 1.0,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.base_probability": 0.004,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.block_length_distribution.long_gap.max": 10,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.block_length_distribution.long_gap.min": 5,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.block_length_distribution.short_gap.max": 4,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.block_length_distribution.short_gap.min": 2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.block_type_probabilities": [
+      0.75,
+      0.25
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.block_types": [
+      "short_gap",
+      "long_gap"
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.configurable": true,
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.explanation": "Battery, sensor, app crash, firmware, or device malfunction.",
+    "missingness_scenarios.scenarios.default_wearable.reasons.device_failure.mechanism": "MCAR",
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.block_types": [
+      "dropout"
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.configurable": true,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.earliest_day": 45,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.explanation": "Permanent or semi-permanent disengagement from device/data collection.",
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.latest_day": 310,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.mechanism": "structural_dropout",
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.patient_probability": 0.045,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.patient_variable_effects.adherence_tendency": -0.45,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.patient_variable_effects.baseline_pain_nrs": 0.15,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.patient_variable_effects.digital_confidence_score": -0.25,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.patient_variable_effects.missingness_tendency": 0.75,
+    "missingness_scenarios.scenarios.default_wearable.reasons.dropout.true_activity_effects.low_activity": 0.2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.base_probability": 0.012,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_length_distribution.isolated.max": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_length_distribution.isolated.min": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_length_distribution.long_gap.max": 12,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_length_distribution.long_gap.min": 5,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_length_distribution.short_gap.max": 4,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_length_distribution.short_gap.min": 2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_type_probabilities": [
+      0.72,
+      0.23,
+      0.05
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.block_types": [
+      "isolated",
+      "short_gap",
+      "long_gap"
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.configurable": true,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.explanation": "Forgetting to wear, carry, charge, or sync the wearable/phone.",
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.mechanism": "MAR",
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.patient_variable_effects.adherence_tendency": -0.65,
+    "missingness_scenarios.scenarios.default_wearable.reasons.forgot_or_nonwear.patient_variable_effects.digital_confidence_score": -0.2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.base_probability": 0.008,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_length_distribution.isolated.max": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_length_distribution.isolated.min": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_length_distribution.long_gap.max": 18,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_length_distribution.long_gap.min": 6,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_length_distribution.short_gap.max": 5,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_length_distribution.short_gap.min": 2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_type_probabilities": [
+      0.5,
+      0.35,
+      0.15
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.block_types": [
+      "isolated",
+      "short_gap",
+      "long_gap"
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.configurable": true,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.explanation": "Pain, fatigue, disrupted routines, low motivation, or recovery burden.",
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.mechanism": "MNAR_like",
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.patient_variable_effects.baseline_pain_nrs": 0.3,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.patient_variable_effects.comorbidity_burden": 0.16,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.patient_variable_effects.missingness_tendency": 0.5,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.true_activity_effects.abrupt_drop": 0.25,
+    "missingness_scenarios.scenarios.default_wearable.reasons.pain_fatigue_or_burden_related_nonwear.true_activity_effects.low_activity": 0.55,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.base_probability": 0.01,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.block_length_distribution.isolated.max": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.block_length_distribution.isolated.min": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.block_length_distribution.short_gap.max": 3,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.block_length_distribution.short_gap.min": 2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.block_type_probabilities": [
+      0.8,
+      0.2
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.block_types": [
+      "isolated",
+      "short_gap"
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.configurable": true,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.explanation": "Invalid wear-time, rest days, or insufficient waking wear time.",
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.mechanism": "MAR",
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.patient_variable_effects.adherence_tendency": -0.2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.patient_variable_effects.variability_tendency": 0.25,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sleep_or_low_wear_time.true_activity_effects.low_activity": 0.1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.base_probability": 0.006,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.block_length_distribution.isolated.max": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.block_length_distribution.isolated.min": 1,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.block_length_distribution.short_gap.max": 5,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.block_length_distribution.short_gap.min": 2,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.block_type_probabilities": [
+      0.65,
+      0.35
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.block_types": [
+      "isolated",
+      "short_gap"
+    ],
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.configurable": true,
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.explanation": "Phone sync, Bluetooth, internet, permissions, or app background restrictions.",
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.mechanism": "MAR",
+    "missingness_scenarios.scenarios.default_wearable.reasons.sync_or_connectivity_problem.patient_variable_effects.digital_confidence_score": -0.25,
+    "missingness_scenarios.scenarios.high_missingness_sensitivity.description": "Higher missingness burden for sensitivity analyses.",
+    "missingness_scenarios.scenarios.high_missingness_sensitivity.dropout_probability_multiplier": 1.6,
+    "missingness_scenarios.scenarios.high_missingness_sensitivity.global_probability_multiplier": 1.8,
+    "missingness_scenarios.scenarios.high_missingness_sensitivity.inherits": "default_wearable",
+    "missingness_scenarios.scenarios.low_missingness_sensitivity.description": "Lower missingness burden for sensitivity analyses.",
+    "missingness_scenarios.scenarios.low_missingness_sensitivity.dropout_probability_multiplier": 0.6,
+    "missingness_scenarios.scenarios.low_missingness_sensitivity.global_probability_multiplier": 0.55,
+    "missingness_scenarios.scenarios.low_missingness_sensitivity.inherits": "default_wearable",
+    "patient_generation.patient_generation.age.max": 85,
+    "patient_generation.patient_generation.age.mean": 67.7,
+    "patient_generation.patient_generation.age.min": 45,
+    "patient_generation.patient_generation.age.sd": 7.5,
+    "patient_generation.patient_generation.age.source": "Duong TKR sample mean/SD, with wider simulation clipping.",
+    "patient_generation.patient_generation.baseline_activity.max_steps": 18000,
+    "patient_generation.patient_generation.baseline_activity.min_steps": 700,
+    "patient_generation.patient_generation.baseline_activity.random_log_sd": 0.3,
+    "patient_generation.patient_generation.baseline_activity.surgical_candidate_multiplier": 0.82,
+    "patient_generation.patient_generation.baseline_function_score.max": 100.0,
+    "patient_generation.patient_generation.baseline_function_score.mean": 62.0,
+    "patient_generation.patient_generation.baseline_function_score.min": 5.0,
+    "patient_generation.patient_generation.baseline_function_score.sd": 18.0,
+    "patient_generation.patient_generation.baseline_function_score.source": "Assumed for post-treatment simulator; higher means better function.",
+    "patient_generation.patient_generation.baseline_pain_nrs.max": 10.0,
+    "patient_generation.patient_generation.baseline_pain_nrs.mean": 5.5,
+    "patient_generation.patient_generation.baseline_pain_nrs.min": 0.0,
+    "patient_generation.patient_generation.baseline_pain_nrs.sd": 2.7,
+    "patient_generation.patient_generation.baseline_pain_nrs.source": "Duong baseline pain 0-10 NRS mean/SD.",
+    "patient_generation.patient_generation.bmi.max": 48.0,
+    "patient_generation.patient_generation.bmi.mean": 30.3,
+    "patient_generation.patient_generation.bmi.min": 18.0,
+    "patient_generation.patient_generation.bmi.sd": 6.0,
+    "patient_generation.patient_generation.bmi.source": "Duong TKR sample mean/SD.",
+    "patient_generation.patient_generation.comorbidity_burden.distribution": "poisson",
+    "patient_generation.patient_generation.comorbidity_burden.lambda": 1.4,
+    "patient_generation.patient_generation.comorbidity_burden.max": 6,
+    "patient_generation.patient_generation.comorbidity_burden.min": 0,
+    "patient_generation.patient_generation.comorbidity_burden.source": "Assumed clinically plausible count.",
+    "patient_generation.patient_generation.digital_confidence_score.max": 100.0,
+    "patient_generation.patient_generation.digital_confidence_score.mean": 72.2,
+    "patient_generation.patient_generation.digital_confidence_score.min": 0.0,
+    "patient_generation.patient_generation.digital_confidence_score.sd": 21.2,
+    "patient_generation.patient_generation.digital_confidence_score.source": "Duong modified Computer Self-efficacy Scale mean/SD.",
+    "patient_generation.patient_generation.latent_traits.adherence_beta": [
+      5.0,
+      2.4
+    ],
+    "patient_generation.patient_generation.latent_traits.missingness_beta": [
+      2.0,
+      5.5
+    ],
+    "patient_generation.patient_generation.latent_traits.recovery_sensitivity_beta": [
+      4.0,
+      3.0
+    ],
+    "patient_generation.patient_generation.latent_traits.setback_beta": [
+      2.0,
+      6.0
+    ],
+    "patient_generation.patient_generation.latent_traits.treatment_effectiveness_beta": [
+      4.2,
+      2.6
+    ],
+    "patient_generation.patient_generation.latent_traits.variability_beta": [
+      2.3,
+      5.0
+    ],
+    "patient_generation.patient_generation.osteoarthritis_severity.categories": [
+      "mild",
+      "moderate",
+      "severe",
+      "end_stage"
+    ],
+    "patient_generation.patient_generation.osteoarthritis_severity.probabilities": [
+      0.04,
+      0.22,
+      0.44,
+      0.3
+    ],
+    "patient_generation.patient_generation.osteoarthritis_severity.source": "Brisson KL distribution and TKR context; shifted toward severe/end-stage.",
+    "patient_generation.patient_generation.patient_activation_score.max": 100.0,
+    "patient_generation.patient_generation.patient_activation_score.mean": 66.3,
+    "patient_generation.patient_generation.patient_activation_score.min": 0.0,
+    "patient_generation.patient_generation.patient_activation_score.sd": 20.4,
+    "patient_generation.patient_generation.patient_activation_score.source": "Duong PAM-13 score mean/SD.",
+    "patient_generation.patient_generation.sex.categories": [
+      "female",
+      "male"
+    ],
+    "patient_generation.patient_generation.sex.probabilities": [
+      0.7,
+      0.3
+    ],
+    "patient_generation.patient_generation.sex.source": "Duong sample was approximately 70% female.",
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.default_probability": 0.37,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.duong_early_target_day21_mean": 2843,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.duong_mapping": "Main surgical recovery pattern; mostly low gradually increasing plus some high rapidly increasing.",
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.duong_week12_target_mean": 6441,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.early_day_sd": 1058,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.formula": "disruption_then_logistic",
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.early_fraction_of_baseline": 0.45,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.immediate_post_treatment_fraction": 0.1,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.late_gain_fraction": 0.08,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.midpoint_day": 75,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.plateau_gain_fraction": 0.28,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.recovery_rate": 0.05,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.parameters.setback_multiplier": 0.9,
+    "recovery_trajectory_classes.trajectory_classes.decrease_then_increase.week12_sd": 1677,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.default_probability": 0.07,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.duong_early_target_day21_mean": 5000,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.duong_mapping": "Clinically plausible one-year extrapolation; not a dominant Duong 12-week group.",
+    "recovery_trajectory_classes.trajectory_classes.decreasing.duong_week12_target_mean": 5600,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.early_day_sd": 2200,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.formula": "decreasing",
+    "recovery_trajectory_classes.trajectory_classes.decreasing.parameters.decline_fraction_year": 0.22,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.parameters.early_disruption_fraction": 0.28,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.parameters.early_fraction_of_baseline": 0.88,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.parameters.midpoint_day": 45,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.parameters.recovery_rate": 0.018,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.parameters.setback_multiplier": 1.25,
+    "recovery_trajectory_classes.trajectory_classes.decreasing.week12_sd": 2100,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.default_probability": 0.14,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.duong_early_target_day21_mean": 2843,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.duong_mapping": "Part of low gradually increasing group extrapolated to unstable year-long recovery.",
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.duong_week12_target_mean": 6441,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.early_day_sd": 1058,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.formula": "fluctuating",
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.early_fraction_of_baseline": 0.5,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.immediate_post_treatment_fraction": 0.12,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.midpoint_day": 85,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.plateau_gain_fraction": 0.2,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.recovery_rate": 0.038,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.relapse_amplitude_fraction": 0.14,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.relapse_cycle_days": 70,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.parameters.setback_multiplier": 1.45,
+    "recovery_trajectory_classes.trajectory_classes.fluctuating_or_relapsing.week12_sd": 1677,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.default_probability": 0.06,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.duong_early_target_day21_mean": 6251,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.duong_mapping": "One-year relapse/decline extrapolation added for later complications or motivation loss.",
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.duong_week12_target_mean": 9614,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.early_day_sd": 2500,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.formula": "increase_then_decrease",
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.decline_fraction_after_peak": 0.23,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.decline_start_day": 170,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.early_fraction_of_baseline": 0.78,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.midpoint_day": 65,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.peak_gain_fraction": 0.3,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.recovery_rate": 0.05,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.parameters.setback_multiplier": 1.1,
+    "recovery_trajectory_classes.trajectory_classes.increase_then_decrease.week12_sd": 1800,
+    "recovery_trajectory_classes.trajectory_classes.increasing.default_probability": 0.18,
+    "recovery_trajectory_classes.trajectory_classes.increasing.duong_early_target_day21_mean": 6251,
+    "recovery_trajectory_classes.trajectory_classes.increasing.duong_mapping": "High rapidly increasing group plus part of high gradually increasing group.",
+    "recovery_trajectory_classes.trajectory_classes.increasing.duong_week12_target_mean": 12794,
+    "recovery_trajectory_classes.trajectory_classes.increasing.early_day_sd": 3508,
+    "recovery_trajectory_classes.trajectory_classes.increasing.formula": "logistic_increase",
+    "recovery_trajectory_classes.trajectory_classes.increasing.parameters.early_fraction_of_baseline": 0.85,
+    "recovery_trajectory_classes.trajectory_classes.increasing.parameters.late_gain_fraction": 0.06,
+    "recovery_trajectory_classes.trajectory_classes.increasing.parameters.midpoint_day": 55,
+    "recovery_trajectory_classes.trajectory_classes.increasing.parameters.plateau_gain_fraction": 0.42,
+    "recovery_trajectory_classes.trajectory_classes.increasing.parameters.recovery_rate": 0.06,
+    "recovery_trajectory_classes.trajectory_classes.increasing.parameters.setback_multiplier": 0.7,
+    "recovery_trajectory_classes.trajectory_classes.increasing.week12_sd": 3173,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.default_probability": 0.18,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.duong_early_target_day21_mean": 6299,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.duong_mapping": "Mostly high and gradually increasing group split into stable one-year outcome.",
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.duong_week12_target_mean": 9614,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.early_day_sd": 1777,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.formula": "stable",
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.parameters.early_fraction_of_baseline": 0.82,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.parameters.long_term_drift_per_day": 5e-05,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.parameters.midpoint_day": 60,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.parameters.plateau_gain_fraction": 0.08,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.parameters.recovery_rate": 0.045,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.parameters.setback_multiplier": 0.75,
+    "recovery_trajectory_classes.trajectory_classes.stable_baseline.week12_sd": 1436
+  }
+}

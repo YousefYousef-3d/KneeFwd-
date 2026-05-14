@@ -1,0 +1,122 @@
+baseline_step_model:
+  description: "Multiplicative log-scale baseline activity model. Brisson percentage effects are encoded as log effects."
+  reference_steps_per_day: 7158
+  reference_age: 61.1
+  reference_bmi: 28.1
+  reference_pain_nrs: 5.5
+  age_log_effect_per_year: -0.0372
+  bmi_log_effect_per_unit: -0.0311
+  spring_fall_log_effect_vs_summer: -0.0716
+  winter_log_effect_vs_summer: -0.1616
+  pain_nrs_log_effect_per_unit: -0.0050
+  comorbidity_log_effect_per_condition: -0.035
+  severity_log_effects:
+    mild: 0.060
+    moderate: 0.000
+    severe: -0.085
+    end_stage: -0.145
+  sex_log_effects:
+    female: -0.030
+    male: 0.000
+
+recovery_class_probability_model:
+  description: "Class-probability logit shifts around configured six-class priors. Pain effects are allowed here because Duong found baseline pain differed across trajectory groups."
+  bmi_center: 30.3
+  pain_center: 5.5
+  age_center: 67.7
+  coefficients_by_class:
+    stable_baseline:
+      bmi: -0.02
+      pain: -0.03
+      age: 0.00
+      treatment_effectiveness: -0.10
+      adherence: 0.15
+    decreasing:
+      bmi: 0.08
+      pain: 0.11
+      age: 0.03
+      treatment_effectiveness: -0.70
+      adherence: -0.50
+    increasing:
+      bmi: -0.10
+      pain: -0.12
+      age: -0.01
+      treatment_effectiveness: 0.60
+      adherence: 0.35
+    decrease_then_increase:
+      bmi: -0.05
+      pain: -0.04
+      age: -0.005
+      treatment_effectiveness: 0.35
+      adherence: 0.25
+    increase_then_decrease:
+      bmi: 0.04
+      pain: 0.05
+      age: 0.015
+      treatment_effectiveness: 0.10
+      adherence: -0.10
+    fluctuating_or_relapsing:
+      bmi: 0.07
+      pain: 0.10
+      age: 0.01
+      treatment_effectiveness: -0.20
+      adherence: -0.25
+  duong_bmi_or_high_rapid_vs_high_gradual: 0.72
+  duong_bmi_log_or_high_rapid_vs_high_gradual: -0.3285
+
+recovery_rate_model:
+  bmi_log_rate_effect_per_unit: -0.018
+  age_log_rate_effect_per_year: -0.010
+  pain_log_rate_effect_per_nrs: -0.025
+  treatment_effectiveness_log_rate_effect: 0.55
+  recovery_sensitivity_log_rate_effect: 0.45
+  adherence_log_rate_effect: 0.30
+
+treatment_effectiveness_model:
+  baseline_multiplier_low: 0.80
+  baseline_multiplier_high: 1.25
+  adherence_effect: 0.20
+  digital_confidence_effect: 0.08
+  comorbidity_effect: -0.08
+  pain_effect: -0.04
+
+variability_model:
+  base_daily_cv: 0.16
+  high_variability_cv: 0.28
+  ar1_phi: 0.62
+  variability_tendency_effect: 0.12
+  pain_effect_on_cv: 0.012
+  low_digital_confidence_effect_on_cv: 0.035
+  weekly_pattern:
+    monday: -0.02
+    tuesday: 0.00
+    wednesday: 0.01
+    thursday: 0.01
+    friday: 0.02
+    saturday: 0.04
+    sunday: -0.03
+
+setback_model:
+  base_event_probability_per_day: 0.0025
+  setback_tendency_effect: 0.012
+  pain_effect: 0.0015
+  comorbidity_effect: 0.0012
+  default_duration_days_mean: 9
+  default_duration_days_sd: 4
+  default_magnitude_fraction_mean: 0.28
+  default_magnitude_fraction_sd: 0.10
+
+final_outcome_model:
+  healthy_plateau_quantile: 0.85
+  max_fraction_of_healthy_upper_plateau: 1.10
+  min_steps: 0
+  max_steps: 25000
+
+missingness_coefficients:
+  adherence_effect: -0.85
+  digital_confidence_effect: -0.55
+  pain_effect: 0.18
+  variability_effect: 0.60
+  low_activity_effect: 0.45
+  comorbidity_effect: 0.14
+  early_post_treatment_effect: 0.25

@@ -1,0 +1,2 @@
+imputation_method,n_rows,n_missing_rows,n_imputed_rows,imputation_mae_against_true_steps,imputation_rmse_against_true_steps
+linear_interpolation,118800,12121,12121,1342.6600115502022,1936.9185054933769

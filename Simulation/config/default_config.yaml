@@ -1,0 +1,28 @@
+random_seed: 20260513
+number_of_patients: 300
+baseline_days: 30
+post_treatment_days: 365
+include_treatment_day: true
+calendar_start_date: "2026-01-01"
+selected_missingness_scenario: default_wearable
+selected_imputation_method: linear_interpolation
+use_healthy_reference: true
+healthy_reference_path: data/external/healthy_steps_reference.csv
+output_dir: outputs
+config_paths:
+  patient_generation: config/patient_generation.yaml
+  coefficients: config/coefficients.yaml
+  recovery_trajectory_classes: config/recovery_trajectory_classes.yaml
+  missingness_scenarios: config/missingness_scenarios.yaml
+run_plotting: true
+run_imputation: true
+figure_settings:
+  dpi: 150
+  max_patients_per_class_plot: 3
+  rolling_window_days: 7
+validation:
+  expected_missingness_rate_min: 0.05
+  expected_missingness_rate_max: 0.35
+  class_proportion_tolerance: 0.08
+  early_recovery_day: 21
+  week12_day: 84

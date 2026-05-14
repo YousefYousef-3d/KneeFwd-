@@ -1,0 +1,63 @@
+patient_generation:
+  age:
+    mean: 67.7
+    sd: 7.5
+    min: 45
+    max: 85
+    source: "Duong TKR sample mean/SD, with wider simulation clipping."
+  sex:
+    categories: [female, male]
+    probabilities: [0.70, 0.30]
+    source: "Duong sample was approximately 70% female."
+  bmi:
+    mean: 30.3
+    sd: 6.0
+    min: 18.0
+    max: 48.0
+    source: "Duong TKR sample mean/SD."
+  baseline_pain_nrs:
+    mean: 5.5
+    sd: 2.7
+    min: 0.0
+    max: 10.0
+    source: "Duong baseline pain 0-10 NRS mean/SD."
+  patient_activation_score:
+    mean: 66.3
+    sd: 20.4
+    min: 0.0
+    max: 100.0
+    source: "Duong PAM-13 score mean/SD."
+  digital_confidence_score:
+    mean: 72.2
+    sd: 21.2
+    min: 0.0
+    max: 100.0
+    source: "Duong modified Computer Self-efficacy Scale mean/SD."
+  baseline_function_score:
+    mean: 62.0
+    sd: 18.0
+    min: 5.0
+    max: 100.0
+    source: "Assumed for post-treatment simulator; higher means better function."
+  comorbidity_burden:
+    distribution: poisson
+    lambda: 1.4
+    min: 0
+    max: 6
+    source: "Assumed clinically plausible count."
+  osteoarthritis_severity:
+    categories: [mild, moderate, severe, end_stage]
+    probabilities: [0.04, 0.22, 0.44, 0.30]
+    source: "Brisson KL distribution and TKR context; shifted toward severe/end-stage."
+  latent_traits:
+    adherence_beta: [5.0, 2.4]
+    treatment_effectiveness_beta: [4.2, 2.6]
+    recovery_sensitivity_beta: [4.0, 3.0]
+    variability_beta: [2.3, 5.0]
+    setback_beta: [2.0, 6.0]
+    missingness_beta: [2.0, 5.5]
+  baseline_activity:
+    surgical_candidate_multiplier: 0.82
+    random_log_sd: 0.30
+    min_steps: 700
+    max_steps: 18000

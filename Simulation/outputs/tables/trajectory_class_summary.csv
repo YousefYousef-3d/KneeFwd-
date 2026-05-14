@@ -1,0 +1,7 @@
+recovery_trajectory_class,n_patients,observed_proportion
+decrease_then_increase,117,0.39
+increasing,71,0.23666666666666666
+fluctuating_or_relapsing,49,0.16333333333333333
+stable_baseline,37,0.12333333333333334
+decreasing,15,0.05
+increase_then_decrease,11,0.03666666666666667

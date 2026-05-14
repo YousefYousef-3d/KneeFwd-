@@ -1,0 +1,103 @@
+scenarios:
+  default_wearable:
+    description: "Balanced wearable/smartphone missingness with isolated days, short gaps, long gaps, MNAR-like burden-related nonwear, and dropout."
+    global_probability_multiplier: 1.0
+    reasons:
+      sleep_or_low_wear_time:
+        base_probability: 0.010
+        mechanism: MAR
+        block_types: [isolated, short_gap]
+        block_type_probabilities: [0.80, 0.20]
+        block_length_distribution:
+          isolated: {min: 1, max: 1}
+          short_gap: {min: 2, max: 3}
+        patient_variable_effects:
+          variability_tendency: 0.25
+          adherence_tendency: -0.20
+        true_activity_effects:
+          low_activity: 0.10
+        configurable: true
+        explanation: "Invalid wear-time, rest days, or insufficient waking wear time."
+      device_failure:
+        base_probability: 0.004
+        mechanism: MCAR
+        block_types: [short_gap, long_gap]
+        block_type_probabilities: [0.75, 0.25]
+        block_length_distribution:
+          short_gap: {min: 2, max: 4}
+          long_gap: {min: 5, max: 10}
+        patient_variable_effects: {}
+        true_activity_effects: {}
+        configurable: true
+        explanation: "Battery, sensor, app crash, firmware, or device malfunction."
+      sync_or_connectivity_problem:
+        base_probability: 0.006
+        mechanism: MAR
+        block_types: [isolated, short_gap]
+        block_type_probabilities: [0.65, 0.35]
+        block_length_distribution:
+          isolated: {min: 1, max: 1}
+          short_gap: {min: 2, max: 5}
+        patient_variable_effects:
+          digital_confidence_score: -0.25
+        true_activity_effects: {}
+        configurable: true
+        explanation: "Phone sync, Bluetooth, internet, permissions, or app background restrictions."
+      forgot_or_nonwear:
+        base_probability: 0.012
+        mechanism: MAR
+        block_types: [isolated, short_gap, long_gap]
+        block_type_probabilities: [0.72, 0.23, 0.05]
+        block_length_distribution:
+          isolated: {min: 1, max: 1}
+          short_gap: {min: 2, max: 4}
+          long_gap: {min: 5, max: 12}
+        patient_variable_effects:
+          adherence_tendency: -0.65
+          digital_confidence_score: -0.20
+        true_activity_effects: {}
+        configurable: true
+        explanation: "Forgetting to wear, carry, charge, or sync the wearable/phone."
+      pain_fatigue_or_burden_related_nonwear:
+        base_probability: 0.008
+        mechanism: MNAR_like
+        block_types: [isolated, short_gap, long_gap]
+        block_type_probabilities: [0.50, 0.35, 0.15]
+        block_length_distribution:
+          isolated: {min: 1, max: 1}
+          short_gap: {min: 2, max: 5}
+          long_gap: {min: 6, max: 18}
+        patient_variable_effects:
+          baseline_pain_nrs: 0.30
+          comorbidity_burden: 0.16
+          missingness_tendency: 0.50
+        true_activity_effects:
+          low_activity: 0.55
+          abrupt_drop: 0.25
+        configurable: true
+        explanation: "Pain, fatigue, disrupted routines, low motivation, or recovery burden."
+      dropout:
+        patient_probability: 0.045
+        earliest_day: 45
+        latest_day: 310
+        mechanism: structural_dropout
+        block_types: [dropout]
+        patient_variable_effects:
+          missingness_tendency: 0.75
+          adherence_tendency: -0.45
+          digital_confidence_score: -0.25
+          baseline_pain_nrs: 0.15
+        true_activity_effects:
+          low_activity: 0.20
+        configurable: true
+        explanation: "Permanent or semi-permanent disengagement from device/data collection."
+  high_missingness_sensitivity:
+    description: "Higher missingness burden for sensitivity analyses."
+    inherits: default_wearable
+    global_probability_multiplier: 1.8
+    dropout_probability_multiplier: 1.6
+  low_missingness_sensitivity:
+    description: "Lower missingness burden for sensitivity analyses."
+    inherits: default_wearable
+    global_probability_multiplier: 0.55
+    dropout_probability_multiplier: 0.6

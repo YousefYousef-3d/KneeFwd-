@@ -1,0 +1,2 @@
+source,n_rows,n_people,mean_steps,sd_steps,p50_steps,p85_steps,p95_steps
+synthetic_fallback,43800,120,9165.342579908676,3517.999423105551,8414.0,12342.0,15811.049999999996

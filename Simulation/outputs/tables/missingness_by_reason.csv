@@ -1,0 +1,7 @@
+missing_reason,missing_mechanism,n_missing_rows,missing_fraction_of_all_rows
+device_failure,MCAR,1631,0.01372895622895623
+dropout,structural_dropout,2175,0.018308080808080808
+forgot_or_nonwear,MAR,2145,0.018055555555555554
+pain_fatigue_or_burden_related_nonwear,MNAR_like,3523,0.029654882154882156
+sleep_or_low_wear_time,MAR,1358,0.01143097643097643
+sync_or_connectivity_problem,MAR,1289,0.01085016835016835

@@ -1,0 +1,95 @@
+trajectory_classes:
+  stable_baseline:
+    default_probability: 0.18
+    duong_mapping: "Mostly high and gradually increasing group split into stable one-year outcome."
+    formula: stable
+    duong_early_target_day21_mean: 6299
+    duong_week12_target_mean: 9614
+    early_day_sd: 1777
+    week12_sd: 1436
+    parameters:
+      early_fraction_of_baseline: 0.82
+      plateau_gain_fraction: 0.08
+      recovery_rate: 0.045
+      midpoint_day: 60
+      long_term_drift_per_day: 0.00005
+      setback_multiplier: 0.75
+  decreasing:
+    default_probability: 0.07
+    duong_mapping: "Clinically plausible one-year extrapolation; not a dominant Duong 12-week group."
+    formula: decreasing
+    duong_early_target_day21_mean: 5000
+    duong_week12_target_mean: 5600
+    early_day_sd: 2200
+    week12_sd: 2100
+    parameters:
+      early_fraction_of_baseline: 0.88
+      decline_fraction_year: 0.22
+      early_disruption_fraction: 0.28
+      recovery_rate: 0.018
+      midpoint_day: 45
+      setback_multiplier: 1.25
+  increasing:
+    default_probability: 0.18
+    duong_mapping: "High rapidly increasing group plus part of high gradually increasing group."
+    formula: logistic_increase
+    duong_early_target_day21_mean: 6251
+    duong_week12_target_mean: 12794
+    early_day_sd: 3508
+    week12_sd: 3173
+    parameters:
+      early_fraction_of_baseline: 0.85
+      plateau_gain_fraction: 0.42
+      recovery_rate: 0.060
+      midpoint_day: 55
+      late_gain_fraction: 0.06
+      setback_multiplier: 0.70
+  decrease_then_increase:
+    default_probability: 0.37
+    duong_mapping: "Main surgical recovery pattern; mostly low gradually increasing plus some high rapidly increasing."
+    formula: disruption_then_logistic
+    duong_early_target_day21_mean: 2843
+    duong_week12_target_mean: 6441
+    early_day_sd: 1058
+    week12_sd: 1677
+    parameters:
+      immediate_post_treatment_fraction: 0.10
+      early_fraction_of_baseline: 0.45
+      plateau_gain_fraction: 0.28
+      recovery_rate: 0.050
+      midpoint_day: 75
+      late_gain_fraction: 0.08
+      setback_multiplier: 0.90
+  increase_then_decrease:
+    default_probability: 0.06
+    duong_mapping: "One-year relapse/decline extrapolation added for later complications or motivation loss."
+    formula: increase_then_decrease
+    duong_early_target_day21_mean: 6251
+    duong_week12_target_mean: 9614
+    early_day_sd: 2500
+    week12_sd: 1800
+    parameters:
+      early_fraction_of_baseline: 0.78
+      peak_gain_fraction: 0.30
+      recovery_rate: 0.050
+      midpoint_day: 65
+      decline_start_day: 170
+      decline_fraction_after_peak: 0.23
+      setback_multiplier: 1.10
+  fluctuating_or_relapsing:
+    default_probability: 0.14
+    duong_mapping: "Part of low gradually increasing group extrapolated to unstable year-long recovery."
+    formula: fluctuating
+    duong_early_target_day21_mean: 2843
+    duong_week12_target_mean: 6441
+    early_day_sd: 1058
+    week12_sd: 1677
+    parameters:
+      immediate_post_treatment_fraction: 0.12
+      early_fraction_of_baseline: 0.50
+      plateau_gain_fraction: 0.20
+      recovery_rate: 0.038
+      midpoint_day: 85
+      relapse_cycle_days: 70
+      relapse_amplitude_fraction: 0.14
+      setback_multiplier: 1.45
