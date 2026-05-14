@@ -1,0 +1,57 @@
+check,item,value,passed,detail
+expected_output_file_exists,complete_data.csv,1.0,True,
+expected_output_file_exists,observed_data.csv,1.0,True,
+expected_output_file_exists,imputed_data.csv,1.0,True,
+expected_output_file_exists,patient_metadata.csv,1.0,True,
+expected_output_file_exists,patient_coefficients.csv,1.0,True,
+expected_output_file_exists,healthy_reference_summary.csv,1.0,True,
+expected_output_file_exists,simulator_parameters.json,1.0,True,
+basic,no_negative_true_steps,0.0,True,
+basic,correct_number_of_patients,300.0,True,
+basic,correct_number_of_days_per_patient,396.0,True,
+basic,missingness_rate,0.10202861952861952,True,
+paper_plausibility,stable_baseline_day21_mean_vs_target,4780.7027027027025,True,target=6299.0
+paper_plausibility,stable_baseline_day84_mean_vs_target,6400.351351351352,True,target=9614.0
+paper_plausibility,decreasing_day21_mean_vs_target,3231.8,True,target=5000.0
+paper_plausibility,decreasing_day84_mean_vs_target,4376.2,True,target=5600.0
+paper_plausibility,increasing_day21_mean_vs_target,4663.802816901409,True,target=6251.0
+paper_plausibility,increasing_day84_mean_vs_target,8210.225352112677,True,target=12794.0
+paper_plausibility,decrease_then_increase_day21_mean_vs_target,1817.7264957264956,True,target=2843.0
+paper_plausibility,decrease_then_increase_day84_mean_vs_target,4189.760683760684,True,target=6441.0
+paper_plausibility,increase_then_decrease_day21_mean_vs_target,3620.090909090909,True,target=6251.0
+paper_plausibility,increase_then_decrease_day84_mean_vs_target,4309.0,False,target=9614.0
+paper_plausibility,fluctuating_or_relapsing_day21_mean_vs_target,2212.918367346939,True,target=2843.0
+paper_plausibility,fluctuating_or_relapsing_day84_mean_vs_target,3966.591836734694,True,target=6441.0
+trajectory,stable_baseline_appears,0.12333333333333334,True,
+trajectory,stable_baseline_proportion_close,0.12333333333333334,True,"target=0.18, tolerance=0.08"
+trajectory,decreasing_appears,0.05,True,
+trajectory,decreasing_proportion_close,0.05,True,"target=0.07, tolerance=0.08"
+trajectory,increasing_appears,0.23666666666666666,True,
+trajectory,increasing_proportion_close,0.23666666666666666,True,"target=0.18, tolerance=0.08"
+trajectory,decrease_then_increase_appears,0.39,True,
+trajectory,decrease_then_increase_proportion_close,0.39,True,"target=0.37, tolerance=0.08"
+trajectory,increase_then_decrease_appears,0.03666666666666667,True,
+trajectory,increase_then_decrease_proportion_close,0.03666666666666667,True,"target=0.06, tolerance=0.08"
+trajectory,fluctuating_or_relapsing_appears,0.16333333333333333,True,
+trajectory,fluctuating_or_relapsing_proportion_close,0.16333333333333333,True,"target=0.14, tolerance=0.08"
+coefficients,age_baseline_steps_correlation_negative,-0.5454907508411496,True,
+coefficients,bmi_baseline_steps_correlation_negative,-0.33536035361791816,True,
+coefficients,pain_not_dominant_direct_baseline_correlation,0.0679535249901173,True,
+coefficients,patient_coefficients_rows,300.0,True,
+missingness,reason_sleep_or_low_wear_time_appears,1.0,True,
+missingness,reason_device_failure_appears,1.0,True,
+missingness,reason_sync_or_connectivity_problem_appears,1.0,True,
+missingness,reason_forgot_or_nonwear_appears,1.0,True,
+missingness,reason_pain_fatigue_or_burden_related_nonwear_appears,1.0,True,
+missingness,reason_dropout_appears,1.0,True,
+missingness,mechanism_MCAR_appears,1.0,True,
+missingness,mechanism_MAR_appears,1.0,True,
+missingness,mechanism_MNAR_like_appears,1.0,True,
+missingness,mechanism_structural_dropout_appears,1.0,True,
+missingness,isolated_blocks_present,2683.0,True,
+missingness,short_or_long_blocks_present,1647.0,True,
+imputation,required_columns_present,1.0,True,
+imputation,observed_values_preserved,1.0,True,
+imputation,missing_values_flagged_when_imputed,12121.0,True,
+imputation,mae_against_true_steps_where_imputed,1342.6600115502022,True,
+imputation,rmse_against_true_steps_where_imputed,1936.9185054933769,True,

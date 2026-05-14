@@ -147,7 +147,8 @@
       },
       "figure_settings": {
         "dpi": 150,
-        "max_patients_per_class_plot": 3,
+        "max_patients_missingness_plot": 12,
+        "max_patients_per_class_plot": 6,
         "rolling_window_days": 7
       },
       "healthy_reference_path": "data/external/healthy_steps_reference.csv",
@@ -697,7 +698,8 @@
     "default.config_paths.patient_generation": "config/patient_generation.yaml",
     "default.config_paths.recovery_trajectory_classes": "config/recovery_trajectory_classes.yaml",
     "default.figure_settings.dpi": 150,
-    "default.figure_settings.max_patients_per_class_plot": 3,
+    "default.figure_settings.max_patients_missingness_plot": 12,
+    "default.figure_settings.max_patients_per_class_plot": 6,
     "default.figure_settings.rolling_window_days": 7,
     "default.healthy_reference_path": "data/external/healthy_steps_reference.csv",
     "default.include_treatment_day": true,

@@ -36,6 +36,7 @@ outputs/validation/validation_metrics.csv
 ```
 
 ## Research
+
 ### Duong et al. 2023
 
 Used mainly for post-treatment trajectory structure after total knee replacement. The results section reported three short-term step-count trajectories over approximately 12 weeks:
@@ -86,6 +87,8 @@ The simulator creates six one-year classes:
 4. `decrease_then_increase`: early post-treatment fall followed by recovery; common after surgery.
 5. `increase_then_decrease`: early improvement followed by later decline.
 6. `fluctuating_or_relapsing`: repeated ups and downs, setbacks, or unstable recovery.
+
+Duong observed three 12-week groups, not these six one-year groups. The mapping is documented in `references/paper_analysis.md` and encoded in `config/recovery_trajectory_classes.yaml`.
 
 ## Coefficient-based model
 
@@ -145,22 +148,6 @@ outputs/data/imputed_data.csv
 
 with `observed_steps`, `imputed_steps`, `was_imputed`, and `imputation_method`.
 
-## Healthy reference data
-
-The optional healthy reference file is:
-
-```text
-data/external/healthy_steps_reference.csv
-```
-
-If it exists and contains rows, it is used to calibrate plausible upper plateaus, day-to-day variation, weekday/weekend effects, and optional age differences. If it is missing or empty, the simulator creates a synthetic fallback internally at runtime and marks it as fallback in:
-
-```text
-outputs/data/healthy_reference_summary.csv
-```
-
-The healthy reference is used only as an upper-bound calibration guide. Simulated post-treatment patients are not forced to behave like healthy people.
-
 ## How to change parameters
 
 Edit YAML files in `config/`:
@@ -177,7 +164,7 @@ Examples:
 
 - Increase sample size: edit `number_of_patients`.
 - Change missingness burden: edit `base_probability` values.
-- Disable figures: set `run_plotting: false`.
+- Disable figures: set `run_plotting: false`. The current plotting code creates one separate trajectory figure for each of the six recovery classes and focuses the remaining figures on missingness; it intentionally does not create a healthy-reference figure, imputation-comparison figure, heatmap, patient-covariate figure, or class-mean-curve figure.
 - Disable imputation: set `run_imputation: false` or choose `no_imputation`.
 - Make winter effects stronger: edit `baseline_step_model.season_effects.winter_log_effect`.
 
@@ -210,15 +197,19 @@ outputs/tables/imputation_summary.csv
 Figures:
 
 ```text
-outputs/figures/example_trajectories_by_class.png
-outputs/figures/example_trajectories_with_missingness.png
-outputs/figures/trajectory_class_mean_curves.png
-outputs/figures/patient_covariate_effects.png
-outputs/figures/missingness_heatmap.png
+outputs/figures/trajectory_class_stable_baseline.png
+outputs/figures/trajectory_class_decreasing.png
+outputs/figures/trajectory_class_increasing.png
+outputs/figures/trajectory_class_decrease_then_increase.png
+outputs/figures/trajectory_class_increase_then_decrease.png
+outputs/figures/trajectory_class_fluctuating_or_relapsing.png
+outputs/figures/missingness_examples_with_gaps.png
 outputs/figures/missingness_by_reason.png
+outputs/figures/missingness_by_mechanism.png
 outputs/figures/missingness_by_month.png
-outputs/figures/imputation_comparison.png
-outputs/figures/healthy_reference_distribution.png
+outputs/figures/missingness_timeline_by_reason.png
+outputs/figures/missingness_block_lengths.png
+outputs/figures/missingness_patient_burden_distribution.png
 ```
 
 Validation:

@@ -18,7 +18,8 @@ run_plotting: true
 run_imputation: true
 figure_settings:
   dpi: 150
-  max_patients_per_class_plot: 3
+  max_patients_per_class_plot: 6
+  max_patients_missingness_plot: 12
   rolling_window_days: 7
 validation:
   expected_missingness_rate_min: 0.05
